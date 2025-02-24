@@ -93,9 +93,9 @@ def get_gpt_response(text):
     """
     # Step 1: Determine if extra info is needed
     prompt_decision = (
-        f"Based on the input: '{text}', decide if additional data from an external HTTP server is necessary. "
+        f"Based on the input: '{text}', first decide if additional data from an external HTTP server is necessary. "
         "If additional data is needed, respond with 'REQUEST: <identifier>' where <identifier> is the key to query. "
-        "If not needed, respond with 'DIRECT: <your final answer>'."
+        "If not needed, respond to the input directly with 'DIRECT: <your final answer>'. This response should not mention your decision of additional data."
     )
     decision_response = openai.chat.completions.create(
         model="gpt-4o",
@@ -117,8 +117,8 @@ def get_gpt_response(text):
 
         # Step 2: Use the additional info in a second GPT‑4o call
         prompt_final = (
-            f"Given the input: '{text}' and the following additional data: '{additional_info}' related to {identifier}, "
-            "please provide a complete and final answer."
+            f"Given the user prompt: '{text}' and the following additional data: '{additional_info}' related to {identifier}, "
+            "please provide a complete and final response."
         )
         final_response_obj = openai.chat.completions.create(
             model="gpt-4o",
